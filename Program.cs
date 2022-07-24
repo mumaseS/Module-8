@@ -3,59 +3,31 @@ using System.IO;
 
 namespace DirectoryManager
 {
-    class Program
+   
+ class FileManager
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            GetCatalogs();
-            
-        }
+            var fileInfo = new FileInfo(@"C:\Users\greed\Documents\TrainingVS22\Module 8\Program.cs");
 
-        
-        static void GetCatalogs()
-        {
-            string dirName = "E:\\";
-            if (Directory.Exists(dirName))
+           using (StreamWriter sw = fileInfo.AppendText())
             {
-                Console.WriteLine("Папки");
-                string[] dirs = Directory.GetDirectories(dirName);
-
-                foreach (string d in dirs)
-                    Console.WriteLine(d);
-                Console.WriteLine();
-
-                Console.WriteLine("Файлы");
-                string[] files = Directory.GetFiles(dirName);
-
-                foreach (string s in files) 
-                    Console.WriteLine(s);
-
-                try
-                {
-                    DirectoryInfo newDirectory = new DirectoryInfo(@"C:\Users\greed\Desktop\testFolder");
-                    if (!newDirectory.Exists)
-                        newDirectory.Create();
-                                       
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-
-                try
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(@"C:\Users\greed\Desktop\testFolder");
-                    string trashPath = @"C:\$RECYCLE.Bin\testFolder";
-                                       
-                        dirInfo.MoveTo(trashPath);
-
-                }
-
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                sw.WriteLine($"// Время запуска: {DateTime.Now}");
             }
+            
+            
+            using (StreamReader sr = fileInfo.OpenText())
+            {
+                string str = "";
+                while ((str = sr.ReadLine()) != null)
+                    Console.WriteLine(str);
+            }
+
+         
         }
     }
+
+
+
 }
+// Время запуска: 24.07.2022 12:44:34
