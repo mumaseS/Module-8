@@ -4,30 +4,43 @@ using System.IO;
 namespace DirectoryManager
 {
    
- class FileManager
+ class BinaryDomain
     {
+        const string SettingsFileName = @"C:\Users\greed\Desktop\BinaryFile.bin";
+
         public static void Main(string[] args)
         {
-            var fileInfo = new FileInfo(@"C:\Users\greed\Documents\TrainingVS22\Module 8\Program.cs");
+            WriteData();
+            ReadData();
+        }
 
-           using (StreamWriter sw = fileInfo.AppendText())
+        static void WriteData()
+        {
+            using (BinaryWriter bw = new BinaryWriter(File.Open(SettingsFileName, FileMode.Create)))
             {
-                sw.WriteLine($"// Время запуска: {DateTime.Now}");
+                bw.Write($"Файл изменен {DateTime.Now} на компьютере c ОС {Environment.OSVersion}");
             }
+        }
+        static void ReadData()
+        {
+            string dataOfCreation;
             
-            
-            using (StreamReader sr = fileInfo.OpenText())
-            {
-                string str = "";
-                while ((str = sr.ReadLine()) != null)
-                    Console.WriteLine(str);
-            }
 
-         
+            if (File.Exists(SettingsFileName))
+            {
+                using (BinaryReader reader = new BinaryReader(File.Open(SettingsFileName, FileMode.Open)))
+                {
+                    dataOfCreation = reader.ReadString();
+                    
+                }
+
+                Console.WriteLine( "Изменение " + dataOfCreation);
+             
+            }
         }
     }
 
 
 
 }
-// Время запуска: 24.07.2022 12:44:34
+
